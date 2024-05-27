@@ -9,18 +9,18 @@ import {
 } from "@material-tailwind/react";
 
 interface MovieCardProps {
-	img: string;
-	genres: string[];
+	posterPath: string;
+	genreNames: string[];
 	title: string;
-	desc: string;
+	overview: string;
 	category: string;
 }
 
 export function MovieCard({
-	img,
-	genres,
+	posterPath,
+	genreNames,
 	title,
-	desc,
+	overview,
 }: MovieCardProps) {
 	return (
 		<Card color="transparent" shadow={false}>
@@ -28,17 +28,17 @@ export function MovieCard({
 				<Image
 					width={768}
 					height={768}
-					src={img}
+					src={posterPath}
 					alt={title}
 					className="h-full w-full scale-[1.1] object-cover object-center"
 				/>
 			</CardHeader>
 			<CardBody className="p-0">
 				<Typography color="blue" className="mb-2 text-xs !font-semibold">
-					{genres.map((genre, i) => (
+					{genreNames.map((genre, i) => (
 						<span key={i} style={{ textTransform: "capitalize" }}>
 							{genre}
-							{i < genres.length - 1 && ", "}
+							{i < genreNames.length - 1 && ", "}
 						</span>
 					))}
 				</Typography>
@@ -52,7 +52,7 @@ export function MovieCard({
 					</Typography>
 				</a>
 				<Typography className="mb-4 font-normal !text-gray-500">
-					{desc}
+					{overview}
 				</Typography>
 			</CardBody>
 		</Card>
