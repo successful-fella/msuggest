@@ -28,7 +28,7 @@ export function MovieCard({
 				<Image
 					width={768}
 					height={768}
-					src={posterPath}
+					src={`https://image.tmdb.org/t/p/w500${posterPath}`}
 					alt={title}
 					className="h-full w-full scale-[1.1] object-cover object-center"
 				/>
