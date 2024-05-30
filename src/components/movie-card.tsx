@@ -34,7 +34,7 @@ export function MovieCard({
 				/>
 			</CardHeader>
 			<CardBody className="p-0">
-				<Typography color="blue" className="mb-2 text-xs !font-semibold">
+				<Typography className="mb-2 text-xs !font-semibold theme-color">
 					{genres.map((genre, i) => (
 						<span key={i} style={{ textTransform: "capitalize" }}>
 							{genre}

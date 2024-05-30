@@ -43,8 +43,8 @@ export function Navbar() {
 
 	return (
 		<MTNavbar shadow={false} fullWidth className="border-0 sticky top-0 z-50">
-			<div className="container mx-auto flex items-center justify-between">
-				<Typography color="blue-gray" className="text-lg font-bold">
+			<div className="container mx-auto flex items-center justify-between py-3">
+				<Typography className="text-4xl font-bold lancelot-font theme-color">
 					mSuggest
 				</Typography>
 			</div>

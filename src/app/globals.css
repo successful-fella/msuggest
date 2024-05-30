@@ -1,3 +1,17 @@
+@import url('https://fonts.googleapis.com/css?family=Lancelot');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.lancelot-font {
+    font-family: 'Lancelot';
+}
+
+.theme-color {
+    color: #db4a2b;
+}
+
+.theme-bg {
+    background-color: #db4a2b;
+}

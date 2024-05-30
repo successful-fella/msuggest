@@ -34,7 +34,7 @@ export function Faq() {
 					</Typography>
 					<Typography
 						variant="lead"
-						className="mx-auto mb-24 w-full max-w-2xl !text-gray-900"
+						className="mx-auto mb-24 w-full max-w-2xl theme-color"
 					>
 						Something New Everyday ❤️
 					</Typography>

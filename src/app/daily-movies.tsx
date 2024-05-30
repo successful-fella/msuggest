@@ -109,7 +109,8 @@ export function DailyMovies() {
 				</Typography>
 				<Typography
 					variant="lead"
-					className="mx-auto w-full px-4 !text-gray-500 lg:w-9/12"
+					className="mx-auto w-full px-4 lg:w-9/12"
+					style={{color: '#db4a2b'}}
 				>
 					Come back in {isClient ? formatRemainingTime(remainingTime) : 'some time'} for new suggestions.
 				</Typography>
@@ -127,7 +128,7 @@ export function DailyMovies() {
 						<TabsHeader
 							className="h-12 bg-transparent"
 							indicatorProps={{
-								className: "!bg-gray-900 rounded-lg",
+								className: "theme-bg rounded-lg",
 							}}
 						>
 							<Tab
