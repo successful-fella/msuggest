@@ -13,7 +13,6 @@ interface MovieCardProps {
 	genres: string[];
 	title: string;
 	desc: string;
-	category: string;
 }
 
 export function MovieCard({

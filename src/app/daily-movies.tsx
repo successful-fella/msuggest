@@ -52,16 +52,16 @@ const MOVIES = [
 	},
 ];
 
-const MOVIE_GENRES = [...new Set(MOVIES.flatMap((movie) => movie.genres))]
+const MOVIE_GENRES = Array.from(new Set(MOVIES.flatMap((movie) => movie.genres)))
 
 const getTimeUntilNextMidnight = () => {
 	const now = new Date();
 	const midnight = new Date(now);
 	midnight.setHours(24, 0, 0, 0); // Set to next midnight
-	return midnight - now;
+	return midnight.getTime() - now.getTime();
 }
 
-const formatRemainingTime = (ms) => {
+const formatRemainingTime = (ms: number) => {
 	const totalSeconds = Math.floor(ms / 1000);
 	const hours = Math.floor(totalSeconds / 3600);
 	const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -109,13 +109,12 @@ export function DailyMovies() {
 				</Typography>
 				<Typography
 					variant="lead"
-					className="mx-auto w-full px-4 lg:w-9/12"
-					style={{color: '#db4a2b'}}
+					className="mx-auto w-full px-4 lg:w-9/12 theme-color"
 				>
 					Come back in {isClient ? formatRemainingTime(remainingTime) : 'some time'} for new suggestions.
 				</Typography>
 				<div className="w-72 mt-5 mx-auto !text-gray-500 py-5">
-					<Select label="Global Industry Filter" value={country} onChange={(val) => setCountry(val)}>
+					<Select label="Global Industry Filter" value={country} onChange={(val) => setCountry(val || '')}>
 						<Option value="IN">Indian</Option>
 						<Option value="US">American</Option>
 						<Option value="JP">Japanese</Option>
