@@ -65,7 +65,7 @@ export function DailyMovies() {
 
 	useEffect(() => {
 		if (country) {
-			fetch(`http://localhost:9092/movies?countryCode=${country}`)
+			fetch(`${process.env.NEXT_PUBLIC_API_URL}movies?countryCode=${country}`)
 				.then(response => response.json())
 				.then(data => {
 					setMovies(data);
