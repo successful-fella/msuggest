@@ -35,7 +35,7 @@ export function DailyMovies() {
 	const [country, setCountry] = useState('');
 	const [movies, setMovies] = useState([]);
 	const [movieGenres, setMovieGenres] = useState([]);
-	const [showType, setShowType] = useState('movie')
+	const [showType, setShowType] = useState(Math.random() < 0.5 ? 'movie' : 'tv')
 
 	useEffect(() => {
 		setIsClient(true);
