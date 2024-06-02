@@ -35,6 +35,7 @@ export function DailyMovies() {
 	const [country, setCountry] = useState('');
 	const [movies, setMovies] = useState([]);
 	const [movieGenres, setMovieGenres] = useState([]);
+	const [showType, setShowType] = useState('movie')
 
 	useEffect(() => {
 		setIsClient(true);
@@ -64,12 +65,11 @@ export function DailyMovies() {
 
 	useEffect(() => {
 		if (country) {
-			fetch(`http://localhost:9091/movies?countryCode=${country}`)
+			fetch(`http://localhost:9092/movies?countryCode=${country}`)
 				.then(response => response.json())
 				.then(data => {
-					console.log(data);
 					setMovies(data);
-					setMovieGenres([...new Set(data.flatMap(movie => movie.genreNames))]);
+					setMovieGenres(Array.from(new Set(data.flatMap((movie: { genreNames: any; }) => movie.genreNames))));
 				})
 				.catch(error => {
 					console.error('Error fetching movies:', error);
@@ -89,14 +89,22 @@ export function DailyMovies() {
 				>
 					Come back in {isClient ? formatRemainingTime(remainingTime) : 'some time'} for new suggestions.
 				</Typography>
-				<div className="w-72 mt-5 mx-auto !text-gray-500 py-5">
-					<Select label="Global Industry Filter" value={country} onChange={(val) => setCountry(val || '')}>
-						<Option value="IN">Indian</Option>
-						<Option value="US">American</Option>
-						<Option value="JP">Japanese</Option>
-						<Option value="CN">Chinese</Option>
-						<Option value="KR">Korean</Option>
-					</Select>
+				<div className="flex justify-center items-center mt-5 mx-auto !text-gray-500 py-5">
+					<div className="w-72 mr-2">
+						<Select label="Global Industry Filter" value={country} onChange={(val) => setCountry(val || '')}>
+							<Option value="IN">Indian</Option>
+							<Option value="US">American</Option>
+							<Option value="JP">Japanese</Option>
+							<Option value="CN">Chinese</Option>
+							<Option value="KR">Korean</Option>
+						</Select>
+					</div>
+					<div className="w-72 mr-2">
+						<Select label="Show Type" value={showType} onChange={(val) => setShowType(val || '')}>
+							<Option value="movie">Movies</Option>
+							<Option value="tv">TVs</Option>
+						</Select>
+					</div>
 				</div>
 				<div className="mt-5 flex items-center justify-center">
 					<Tabs value={activeTab} className="w-full lg:w-8/12">
@@ -115,7 +123,6 @@ export function DailyMovies() {
 								All
 							</Tab>
 							{movieGenres.map((genre) => {
-								console.log(genre); // Log each genre
 								return (
 									<Tab
 										key={genre}
@@ -123,7 +130,7 @@ export function DailyMovies() {
 										className={`!font-medium capitalize transition-all duration-300 ${activeTab === genre ? "text-white" : "capitalize"}`}
 										onClick={() => setActiveTab(genre)}
 									>
-										{genre}
+										{genre === 'Science Fiction' ? 'SciFi' : genre}
 									</Tab>
 								);
 							})}
