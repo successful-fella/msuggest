@@ -13,47 +13,6 @@ import {
 } from "@material-tailwind/react";
 import MovieCard from "@/components/movie-card";
 
-const MOVIES = [
-	{
-		img: `/image/movies/1KTazlgbXsAgAFVRw1oRZMPfQaw.jpg`,
-		genres: ["action", "adventure", "romance"],
-		title: "Salaad",
-		desc: "A heartwarming and humorous picture book that eases the jitters of starting kindergarten.",
-	},
-	{
-		img: `/image/movies/aRqQNSuXpcE3dkJC43aEg9f2HXd.jpg`,
-		genres: ["anime", "comedy"],
-		title: "One Piece",
-		desc: "A funny and relatable novel about the challenges of navigating middle school.",
-	},
-	{
-		img: `/image/movies/hTP1DtLGFamjfu8WqjnuQdP1n4i.jpg`,
-		genres: ["action", "gore"],
-		title: "Attack on Titan",
-		desc: "A practical guidebook that helps college students prepare for the transition to university.",
-	},
-	{
-		img: `/image/movies/nZNUTxGsSB4nLEC9Bpa2xfu81qV.jpg`,
-		genres: ["adventure", "drama", "comedy", "romance"],
-		title: "Munna Bhai M.B.B.S.",
-		desc: "A valuable resource for high school seniors and college freshmen, offering effective study strategies.",
-	},
-	{
-		img: `/image/movies/q719jXXEzOoYaps6babgKnONONX.jpg`,
-		genres: ["romance", "comedy"],
-		title: "Kimi no Nawa",
-		desc: "A classic reference book on grammar and writing skills, essential for high school and college students.",
-	},
-	{
-		img: `/image/movies/ykZ7hlShkdRQaL2aiieXdEMmrLb.jpg`,
-		genres: ["action", "adventure"],
-		title: "Three Body Problem",
-		desc: "A classic reference book on grammar and writing skills, essential for high school and college students.",
-	},
-];
-
-const MOVIE_GENRES = Array.from(new Set(MOVIES.flatMap((movie) => movie.genres)))
-
 const getTimeUntilNextMidnight = () => {
 	const now = new Date();
 	const midnight = new Date(now);
@@ -73,7 +32,9 @@ export function DailyMovies() {
 	const [activeTab, setActiveTab] = useState("all");
 	const [remainingTime, setRemainingTime] = useState(getTimeUntilNextMidnight());
 	const [isClient, setIsClient] = useState(false);
-	const [country, setCountry] = useState('')
+	const [country, setCountry] = useState('');
+	const [movies, setMovies] = useState([]);
+	const [movieGenres, setMovieGenres] = useState([]);
 
 	useEffect(() => {
 		setIsClient(true);
@@ -89,7 +50,7 @@ export function DailyMovies() {
 			.then(response => response.json())
 			.then(data => {
 				console.log(data.country)
-				if(['IN', 'US', 'CN', 'KR', 'JP'].includes(data.country)) {
+				if (['IN', 'US', 'CN', 'KR', 'JP'].includes(data.country)) {
 					setCountry(data.country)
 				} else {
 					setCountry('IN')
@@ -99,7 +60,22 @@ export function DailyMovies() {
 				console.error('Error fetching location:', error);
 				setCountry('IN');
 			});
-	}, [])
+	}, []);
+
+	useEffect(() => {
+		if (country) {
+			fetch(`http://localhost:9091/movies?countryCode=${country}`)
+				.then(response => response.json())
+				.then(data => {
+					console.log(data);
+					setMovies(data);
+					setMovieGenres([...new Set(data.flatMap(movie => movie.genreNames))]);
+				})
+				.catch(error => {
+					console.error('Error fetching movies:', error);
+				});
+		}
+	}, [country]);
 
 	return (
 		<section className="px-8 pt-20 pb-10">
@@ -138,25 +114,28 @@ export function DailyMovies() {
 							>
 								All
 							</Tab>
-							{MOVIE_GENRES.map((genre) => (
-								<Tab
-									key={genre}
-									value={genre}
-									className={`!font-medium capitalize transition-all duration-300 ${activeTab === genre ? "text-white" : "capitalize"}`}
-									onClick={() => setActiveTab(genre)}
-								>
-									{genre}
-								</Tab>
-							))}
+							{movieGenres.map((genre) => {
+								console.log(genre); // Log each genre
+								return (
+									<Tab
+										key={genre}
+										value={genre}
+										className={`!font-medium capitalize transition-all duration-300 ${activeTab === genre ? "text-white" : "capitalize"}`}
+										onClick={() => setActiveTab(genre)}
+									>
+										{genre}
+									</Tab>
+								);
+							})}
 						</TabsHeader>
 					</Tabs>
 				</div>
 			</div>
 			<div className="container mx-auto grid grid-cols-1 items-start gap-x-6 gap-y-20 md:grid-cols-2 xl:grid-cols-3">
-				{MOVIES.map((props, key) => {
+				{movies.map((props, key) => {
 					if (activeTab === "all") {
 						return <MovieCard key={key} {...props} />
-					} else if (props.genres.includes(activeTab)) {
+					} else if (props.genreNames.includes(activeTab)) {
 						return <MovieCard key={key} {...props} />
 					}
 				})}
