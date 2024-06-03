@@ -12,6 +12,7 @@ import {
 	Option
 } from "@material-tailwind/react";
 import MovieCard from "@/components/movie-card";
+import TvCard from "@/components/tv-card";
 
 const getTimeUntilNextMidnight = () => {
 	const now = new Date();
@@ -35,7 +36,7 @@ export function DailyMovies() {
 	const [country, setCountry] = useState('');
 	const [movies, setMovies] = useState([]);
 	const [movieGenres, setMovieGenres] = useState([]);
-	const [showType, setShowType] = useState(Math.random() < 0.5 ? 'movie' : 'tv')
+	const [showType, setShowType] = useState("movies");
 
 	useEffect(() => {
 		setIsClient(true);
@@ -65,7 +66,7 @@ export function DailyMovies() {
 
 	useEffect(() => {
 		if (country) {
-			fetch(`${process.env.NEXT_PUBLIC_API_URL}movies?countryCode=${country}`)
+			fetch(`${process.env.NEXT_PUBLIC_API_URL}${showType}?countryCode=${country}`)
 				.then(response => response.json())
 				.then(data => {
 					setMovies(data);
@@ -76,6 +77,34 @@ export function DailyMovies() {
 				});
 		}
 	}, [country]);
+
+	const changeByCountry = (country: string) => {
+		setCountry(country);
+		console.log("Console from country change", showType);
+		fetch(`${process.env.NEXT_PUBLIC_API_URL}${showType}?countryCode=${country}`)
+			.then(response => response.json())
+			.then(data => {
+				setMovies(data);
+				setMovieGenres(Array.from(new Set(data.flatMap((movie: { genreNames: any; }) => movie.genreNames))));
+			})
+			.catch(error => {
+				console.error('Error fetching movies:', error);
+			});
+	}
+
+	const changeShowType = (type: String) => {
+		setShowType(type);
+		fetch(`${process.env.NEXT_PUBLIC_API_URL}${type}?countryCode=${country}`)
+			.then(response => response.json())
+			.then(data => {
+				console.log(data);
+				setMovies(data);
+				setMovieGenres(Array.from(new Set(data.flatMap((movie: { genreNames: any; }) => movie.genreNames))));
+			})
+			.catch(error => {
+				console.error('Error fetching movies:', error);
+			});
+	}
 
 	return (
 		<section className="px-8 pt-20 pb-10">
@@ -91,7 +120,7 @@ export function DailyMovies() {
 				</Typography>
 				<div className="flex justify-center items-center mt-5 mx-auto !text-gray-500 py-5">
 					<div className="w-72 mr-2">
-						<Select label="Global Industry Filter" value={country} onChange={(val) => setCountry(val || '')}>
+						<Select label="Global Industry Filter" value={country} onChange={(val) => changeByCountry(val)}>
 							<Option value="IN">Indian</Option>
 							<Option value="US">American</Option>
 							<Option value="JP">Japanese</Option>
@@ -100,8 +129,8 @@ export function DailyMovies() {
 						</Select>
 					</div>
 					<div className="w-72 mr-2">
-						<Select label="Show Type" value={showType} onChange={(val) => setShowType(val || '')}>
-							<Option value="movie">Movies</Option>
+						<Select label="Show Type" value={showType} onChange={(val) => changeShowType(val)}>
+							<Option value="movies">Movies</Option>
 							<Option value="tv">TVs</Option>
 						</Select>
 					</div>
@@ -140,10 +169,18 @@ export function DailyMovies() {
 			</div>
 			<div className="container mx-auto grid grid-cols-1 items-start gap-x-6 gap-y-20 md:grid-cols-2 xl:grid-cols-3">
 				{movies.map((props, key) => {
-					if (activeTab === "all") {
-						return <MovieCard key={key} {...props} />
-					} else if (props.genreNames.includes(activeTab)) {
-						return <MovieCard key={key} {...props} />
+					if (showType == "movies") {
+						if (activeTab === "all") {
+							return <MovieCard key={key} {...props} />
+						} else if (props.genreNames.includes(activeTab)) {
+							return <MovieCard key={key} {...props} />
+						}
+					} else {
+						if (activeTab === "all") {
+							return <TvCard key={key} {...props} />
+						} else if (props.genreNames.includes(activeTab)) {
+							return <TvCard key={key} {...props} />
+						}
 					}
 				})}
 			</div>

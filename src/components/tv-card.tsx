@@ -8,28 +8,28 @@ import {
 	CardHeader,
 } from "@material-tailwind/react";
 
-interface MovieCardProps {
-	posterPath: string;
+interface TvCardProps {
+	poster_path: string;
 	genreNames: string[];
-	title: string;
+	name: string;
 	overview: string;
 	category: string;
 }
 
-export function MovieCard({
-	posterPath,
+export function TvCard({
+	poster_path,
 	genreNames,
-	title,
+	name,
 	overview,
-}: MovieCardProps) {
+}: TvCardProps) {
 	return (
 		<Card color="transparent" shadow={false}>
 			<CardHeader color="gray" floated={false} className="mx-0 mt-0 mb-6">
 				<Image
 					width={768}
 					height={768}
-					src={`https://image.tmdb.org/t/p/w500${posterPath}`}
-					alt={title}
+					src={`https://image.tmdb.org/t/p/w500${poster_path}`}
+					alt={`${name}`}
 					className="h-full w-full scale-[1.1] object-cover object-center"
 				/>
 			</CardHeader>
@@ -48,7 +48,7 @@ export function MovieCard({
 						color="blue-gray"
 						className="mb-3 font-bold normal-case xl:w-64"
 					>
-						{title}
+						{name}
 					</Typography>
 				</a>
 				<Typography className="mb-4 font-normal !text-gray-500">
@@ -58,4 +58,4 @@ export function MovieCard({
 		</Card>
 	);
 }
-export default MovieCard
+export default TvCard
