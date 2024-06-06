@@ -36,7 +36,7 @@ export function DailyMovies() {
 	const [country, setCountry] = useState('');
 	const [movies, setMovies] = useState([]);
 	const [movieGenres, setMovieGenres] = useState([]);
-	const [showType, setShowType] = useState("movies");
+	const [showType, setShowType] = useState(Math.random() < 0.5 ? 'movie' : 'tv')
 
 	useEffect(() => {
 		setIsClient(true);
@@ -92,7 +92,7 @@ export function DailyMovies() {
 			});
 	}
 
-	const changeShowType = (type: String) => {
+	const changeShowType = (type: any) => {
 		setShowType(type);
 		fetch(`${process.env.NEXT_PUBLIC_API_URL}${type}?countryCode=${country}`)
 			.then(response => response.json())
@@ -120,7 +120,7 @@ export function DailyMovies() {
 				</Typography>
 				<div className="flex justify-center items-center mt-5 mx-auto !text-gray-500 py-5">
 					<div className="w-72 mr-2">
-						<Select label="Global Industry Filter" value={country} onChange={(val) => changeByCountry(val)}>
+						<Select label="Global Industry Filter" value={country} onChange={(val) => changeByCountry(val || '')}>
 							<Option value="IN">Indian</Option>
 							<Option value="US">American</Option>
 							<Option value="JP">Japanese</Option>
@@ -168,7 +168,7 @@ export function DailyMovies() {
 				</div>
 			</div>
 			<div className="container mx-auto grid grid-cols-1 items-start gap-x-6 gap-y-20 md:grid-cols-2 xl:grid-cols-3">
-				{movies.map((props, key) => {
+				{movies.map((props : any, key) => {
 					if (showType == "movies") {
 						if (activeTab === "all") {
 							return <MovieCard key={key} {...props} />
