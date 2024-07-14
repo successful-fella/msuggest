@@ -180,7 +180,7 @@ export function DailyMovies() {
 			</div>
 			<div className={`container mx-auto grid grid-cols-1 items-start gap-x-6 gap-y-20 ${view === 'card' ? 'md:grid-cols-2 xl:grid-cols-4' : 'md:grid-cols-1 xl:grid-cols-1'}`}>
 				{movies.length === 0 ? (
-					Array(6).fill(1).map((val, i) =>
+					Array(8).fill(1).map((val, i) =>
 						<MovieCardSkeleton key={i} />
 					)
 				) : (
