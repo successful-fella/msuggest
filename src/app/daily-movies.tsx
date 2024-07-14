@@ -12,7 +12,7 @@ import { Squares2X2Icon, QueueListIcon } from "@heroicons/react/24/solid"
 const getTimeUntilNextMidnight = () => {
 	const now = new Date();
 	const midnight = new Date(now);
-	midnight.setHours(24, 0, 0, 0); // Set to next midnight
+	midnight.setHours(24, 0, 0, 0);
 	return midnight.getTime() - now.getTime();
 }
 
@@ -65,7 +65,7 @@ export function DailyMovies() {
 			fetch(`${process.env.NEXT_PUBLIC_API_URL}${showType}?countryCode=${country}`)
 				.then(response => response.json())
 				.then(data => {
-					const adjustedData = data.map(movie => ({
+					const adjustedData = data.map((movie: any) => ({
 						...movie,
 						posterPath: movie.posterPath || movie.poster_path,
 						title: movie.name || movie.title,
