@@ -1,6 +1,6 @@
 import { Typography } from "@material-tailwind/react";
 
-export default () => (
+const GenreSkeleton = () => (
     <div className="mt-5 flex items-center justify-center">
         <Typography
             as="div"
@@ -46,3 +46,5 @@ export default () => (
         </Typography>
     </div>
 )
+
+export default GenreSkeleton

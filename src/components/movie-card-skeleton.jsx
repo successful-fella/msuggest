@@ -5,7 +5,7 @@ import {
 	CardBody
 } from "@material-tailwind/react"
 
-export default () => (
+const MovieCardSkeleton = () => (
     <Card color="transparent" shadow={false}>
         <CardHeader color="transparent" floated={false} className="mx-0 mt-0 mb-6">
             <Typography
@@ -49,3 +49,5 @@ export default () => (
         </CardBody>
     </Card>
 )
+
+export default MovieCardSkeleton
