@@ -15,3 +15,27 @@
 .theme-bg {
     background-color: #db4a2b;
 }
+
+/* Tooltip.module.css */
+.tooltip {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 0.5rem;
+    width: 18rem;
+    max-width: 100%;
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 1px solid #d1d5db;
+    color: #fff;
+    border-radius: 0.25rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+    overflow-y: auto;
+    max-height: 12rem; /* Adjust the height as needed */
+  }
+  
+  .tooltip-content {
+    white-space: normal;
+  }
+  
