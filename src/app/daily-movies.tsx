@@ -2,17 +2,12 @@
 
 import { useState, useEffect } from "react"
 
-import {
-	Button,
-	Typography,
-	Tabs,
-	TabsHeader,
-	Tab,
-	Select,
-	Option
-} from "@material-tailwind/react";
-import MovieCard from "@/components/movie-card";
-import TvCard from "@/components/tv-card";
+import { Typography, Tabs, TabsHeader, Tab, Select, Option, List } from "@material-tailwind/react";
+import MovieCard from "@/components/movie-card"
+import MovieList from "@/components/movie-list"
+import GenreSkeleton from "@/components/genre-skeleton"
+import MovieCardSkeleton from "@/components/movie-card-skeleton"
+import { Squares2X2Icon, QueueListIcon } from "@heroicons/react/24/solid"
 
 const getTimeUntilNextMidnight = () => {
 	const now = new Date();
@@ -37,6 +32,7 @@ export function DailyMovies() {
 	const [movies, setMovies] = useState([]);
 	const [movieGenres, setMovieGenres] = useState([]);
 	const [showType, setShowType] = useState(Math.random() < 0.5 ? 'movies' : 'tv')
+	const [view, setView] = useState('card')
 
 	useEffect(() => {
 		setIsClient(true);
@@ -69,7 +65,12 @@ export function DailyMovies() {
 			fetch(`${process.env.NEXT_PUBLIC_API_URL}${showType}?countryCode=${country}`)
 				.then(response => response.json())
 				.then(data => {
-					setMovies(data);
+					const adjustedData = data.map(movie => ({
+						...movie,
+						posterPath: movie.posterPath || movie.poster_path,
+						title: movie.name || movie.title,
+					}))
+					setMovies(adjustedData)
 					setMovieGenres(Array.from(new Set(data.flatMap((movie: { genreNames: any; }) => movie.genreNames))));
 				})
 				.catch(error => {
@@ -108,7 +109,7 @@ export function DailyMovies() {
 
 	return (
 		<section className="px-8 pt-20 pb-10">
-			<div className="container mx-auto mb-20 text-center">
+			<div className="container mx-auto mb-10 text-center">
 				<Typography variant="h1" color="blue-gray" className="mb-2">
 					New TVs/Movies Suggestion Everyday!
 				</Typography>
@@ -135,54 +136,70 @@ export function DailyMovies() {
 						</Select>
 					</div>
 				</div>
-				<div className="mt-5 flex items-center justify-center">
-					<Tabs value={activeTab} className="w-full lg:w-8/12">
-						<TabsHeader
-							className="h-12 bg-transparent"
-							indicatorProps={{
-								className: "theme-bg rounded-lg",
-							}}
-						>
-							<Tab
-								key={'all'}
-								value={'all'}
-								className={`!font-medium capitalize transition-all duration-300 ${activeTab === 'all' ? "text-white" : "capitalize"}`}
-								onClick={() => setActiveTab('all')}
+				{movieGenres.length === 0 ? (
+					<GenreSkeleton />
+				) : (
+					<div className="mt-5 flex items-center justify-center">
+						<Tabs value={activeTab} className="w-full lg:w-8/12">
+							<TabsHeader
+								className="h-12 bg-transparent"
+								indicatorProps={{
+									className: "theme-bg rounded-lg",
+								}}
 							>
-								All
-							</Tab>
-							{movieGenres.map((genre) => {
-								return (
-									<Tab
-										key={genre}
-										value={genre}
-										className={`!font-medium capitalize transition-all duration-300 ${activeTab === genre ? "text-white" : "capitalize"}`}
-										onClick={() => setActiveTab(genre)}
-									>
-										{genre === 'Science Fiction' ? 'SciFi' : genre}
-									</Tab>
-								);
-							})}
-						</TabsHeader>
-					</Tabs>
+								<Tab
+									key={'all'}
+									value={'all'}
+									className={`!font-medium capitalize transition-all duration-300 ${activeTab === 'all' ? "text-white" : "capitalize"}`}
+									onClick={() => setActiveTab('all')}
+								>
+									All
+								</Tab>
+								{movieGenres.map((genre) => {
+									return (
+										<Tab
+											key={genre}
+											value={genre}
+											className={`!font-medium capitalize transition-all duration-300 ${activeTab === genre ? "text-white" : "capitalize"}`}
+											onClick={() => setActiveTab(genre)}
+										>
+											{genre === 'Science Fiction' ? 'SciFi' : genre}
+										</Tab>
+									);
+								})}
+							</TabsHeader>
+						</Tabs>
+					</div>
+				)}
+			</div>
+			<div className="flex justify-end mb-10 container mx-auto">
+				<div className="inline-flex bg-gray-200 p-2 rounded">
+					<Squares2X2Icon className={`h-4 w-4 mr-2 cursor-pointer ${view === 'card' ? 'theme-color' : ''}`} onClick={() => setView('card')} />
+					<QueueListIcon className={`h-4 w-4 cursor-pointer ${view === 'list' ? 'theme-color' : ''}`} onClick={() => setView('list')} />
 				</div>
 			</div>
-			<div className="container mx-auto grid grid-cols-1 items-start gap-x-6 gap-y-20 md:grid-cols-2 xl:grid-cols-3">
-				{movies.map((props : any, key) => {
-					if (showType == "movies") {
-						if (activeTab === "all") {
-							return <MovieCard key={key} {...props} />
-						} else if (props.genreNames.includes(activeTab)) {
-							return <MovieCard key={key} {...props} />
+			<div className={`container mx-auto grid grid-cols-1 items-start gap-x-6 gap-y-20 ${view === 'card' ? 'md:grid-cols-2 xl:grid-cols-4' : 'md:grid-cols-1 xl:grid-cols-1'}`}>
+				{movies.length === 0 ? (
+					Array(6).fill(1).map((val, i) =>
+						<MovieCardSkeleton key={i} />
+					)
+				) : (
+					movies.map((props: any, key) => {
+						if (showType === "movies") {
+							if (activeTab === "all") {
+								return view === 'card' ? <MovieCard key={key} {...props} /> : <MovieList key={key} {...props} />
+							} else if (props.genreNames.includes(activeTab)) {
+								return view === 'card' ? <MovieCard key={key} {...props} /> : <MovieList key={key} {...props} />
+							}
+						} else {
+							if (activeTab === "all") {
+								return view === 'card' ? <MovieCard key={key} {...props} /> : <MovieList key={key} {...props} />
+							} else if (props.genreNames.includes(activeTab)) {
+								return view === 'card' ? <MovieCard key={key} {...props} /> : <MovieList key={key} {...props} />
+							}
 						}
-					} else {
-						if (activeTab === "all") {
-							return <TvCard key={key} {...props} />
-						} else if (props.genreNames.includes(activeTab)) {
-							return <TvCard key={key} {...props} />
-						}
-					}
-				})}
+					})
+				)}
 			</div>
 		</section>
 	);
