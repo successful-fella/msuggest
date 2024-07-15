@@ -79,7 +79,8 @@ export function MovieCard({
 						)}
 					</Typography>
 				</CardBody>
-			</Card> : ""
-	);
+			</Card>
+		: null
+	)
 }
 export default MovieCard
