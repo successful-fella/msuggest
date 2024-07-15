@@ -47,7 +47,6 @@ export function DailyMovies() {
 		fetch("https://ipinfo.io", { headers: { 'Accept': 'application/json' } })
 			.then(response => response.json())
 			.then(data => {
-				console.log(data.country)
 				if (['IN', 'US', 'CN', 'KR', 'JP'].includes(data.country)) {
 					setCountry(data.country)
 				} else {
@@ -80,8 +79,9 @@ export function DailyMovies() {
 	}, [country]);
 
 	const changeByCountry = (country: string) => {
+		setMovies([])
+		setMovieGenres([])
 		setCountry(country);
-		console.log("Console from country change", showType);
 		fetch(`${process.env.NEXT_PUBLIC_API_URL}${showType}?countryCode=${country}`)
 			.then(response => response.json())
 			.then(data => {
@@ -94,11 +94,12 @@ export function DailyMovies() {
 	}
 
 	const changeShowType = (type: any) => {
+		setMovies([])
+		setMovieGenres([])
 		setShowType(type);
 		fetch(`${process.env.NEXT_PUBLIC_API_URL}${type}?countryCode=${country}`)
 			.then(response => response.json())
 			.then(data => {
-				console.log(data);
 				setMovies(data);
 				setMovieGenres(Array.from(new Set(data.flatMap((movie: { genreNames: any; }) => movie.genreNames))));
 			})
