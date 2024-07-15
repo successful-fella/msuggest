@@ -34,6 +34,15 @@ export function DailyMovies() {
 	const [showType, setShowType] = useState(Math.random() < 0.5 ? 'movies' : 'tv')
 	const [view, setView] = useState('card')
 
+	const normalizeShowData = (data: any) => {
+		const adjustedData = data.map((movie: any) => ({
+			...movie,
+			posterPath: movie.posterPath || movie.poster_path,
+			title: movie.name || movie.title,
+		}))
+		return adjustedData
+	}
+
 	useEffect(() => {
 		setIsClient(true);
 		const interval = setInterval(() => {
@@ -64,11 +73,7 @@ export function DailyMovies() {
 			fetch(`${process.env.NEXT_PUBLIC_API_URL}${showType}?countryCode=${country}`)
 				.then(response => response.json())
 				.then(data => {
-					const adjustedData = data.map((movie: any) => ({
-						...movie,
-						posterPath: movie.posterPath || movie.poster_path,
-						title: movie.name || movie.title,
-					}))
+					const adjustedData = normalizeShowData(data)
 					setMovies(adjustedData)
 					setMovieGenres(Array.from(new Set(data.flatMap((movie: { genreNames: any; }) => movie.genreNames))));
 				})
@@ -85,7 +90,8 @@ export function DailyMovies() {
 		fetch(`${process.env.NEXT_PUBLIC_API_URL}${showType}?countryCode=${country}`)
 			.then(response => response.json())
 			.then(data => {
-				setMovies(data);
+				const adjustedData = normalizeShowData(data)
+				setMovies(adjustedData);
 				setMovieGenres(Array.from(new Set(data.flatMap((movie: { genreNames: any; }) => movie.genreNames))));
 			})
 			.catch(error => {
@@ -100,7 +106,8 @@ export function DailyMovies() {
 		fetch(`${process.env.NEXT_PUBLIC_API_URL}${type}?countryCode=${country}`)
 			.then(response => response.json())
 			.then(data => {
-				setMovies(data);
+				const adjustedData = normalizeShowData(data)
+				setMovies(adjustedData);
 				setMovieGenres(Array.from(new Set(data.flatMap((movie: { genreNames: any; }) => movie.genreNames))));
 			})
 			.catch(error => {
