@@ -148,7 +148,7 @@ export function DailyMovies() {
 					<GenreSkeleton />
 				) : (
 					<div className="mt-5 flex items-center justify-center">
-						<Tabs value={activeTab} className="w-full lg:w-8/12">
+						<Tabs value={activeTab} className="w-full lg:w-8/12 overflow-x-auto">
 							<TabsHeader
 								className="h-12 bg-transparent"
 								indicatorProps={{
