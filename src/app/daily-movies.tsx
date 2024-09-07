@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from "react"
 
-import { Typography, Tabs, TabsHeader, Tab, Select, Option, List } from "@material-tailwind/react";
+import { Typography, Tabs, TabsHeader, Tab, Select, Option, Button } from "@material-tailwind/react";
 import MovieCard from "@/components/movie-card"
 import MovieList from "@/components/movie-list"
 import GenreSkeleton from "@/components/genre-skeleton"
 import MovieCardSkeleton from "@/components/movie-card-skeleton"
 import { Squares2X2Icon, QueueListIcon } from "@heroicons/react/24/solid"
+import Link from 'next/link'
 
 const getTimeUntilNextMidnight = () => {
 	const now = new Date();
@@ -127,6 +128,12 @@ export function DailyMovies() {
 				>
 					Come back in {isClient ? formatRemainingTime(remainingTime) : 'some time'} for new suggestions.
 				</Typography>
+				<Link href="movie/1/guardians-of-the-galaxy-vol-3/" className="mx-5">
+					<Button color="gray">Link to Movie Details Frontend</Button>
+				</Link>
+				<Link href="tv/1/the-walking-dead" className="mx-5">
+					<Button color="gray">Link to TV Details Frontend</Button>
+				</Link>
 				<div className="flex justify-center items-center mt-5 mx-auto !text-gray-500 py-5">
 					<div className="w-72 mr-2">
 						<Select label="Global Industry Filter" value={country} onChange={(val) => changeByCountry(val || '')}>

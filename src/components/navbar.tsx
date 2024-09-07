@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Navbar as MTNavbar,
-	Button,
 	Typography,
+	Button,
 } from "@material-tailwind/react";
-
+import { CommentCount } from 'disqus-react';
+import { ChatBubbleLeftRightIcon } from "@heroicons/react/24/solid"
 interface NavItemProps {
 	children: React.ReactNode;
 	href?: string;
@@ -34,7 +35,14 @@ export function Navbar() {
 		setOpen((cur) => !cur);
 	}
 
-	React.useEffect(() => {
+	const scrollToDiscussion = () => {
+		const discussionSection = document.querySelector('.disqus-section');
+		if (discussionSection) {
+			discussionSection.scrollIntoView({ behavior: 'smooth' });
+		}
+	};
+
+	useEffect(() => {
 		window.addEventListener(
 			"resize",
 			() => window.innerWidth >= 960 && setOpen(false)
@@ -47,6 +55,26 @@ export function Navbar() {
 				<Typography className="text-4xl font-bold lancelot-font theme-color">
 					mSuggest
 				</Typography>
+				<div className="flex items-center gap-4">
+					<Button
+						variant="text"
+						className="flex items-center gap-2"
+						onClick={scrollToDiscussion}
+					>
+						<ChatBubbleLeftRightIcon className="h-5 w-5" />
+						<span className="hidden sm:inline">Discussion</span>
+						<CommentCount
+							shortname='msuggest'
+							config={{
+								url: '',
+								identifier: 'home',
+								title: 'mSuggest Discussion'
+							}}
+						>
+							Comments
+						</CommentCount>
+					</Button>
+				</div>
 			</div>
 		</MTNavbar>
 	);
