@@ -3,6 +3,7 @@
 // components
 import { Navbar, Footer } from "@/components";
 import { DiscussionEmbed } from 'disqus-react'
+import './globals.css';
 
 // sections
 import DailyMovies from "./daily-movies";

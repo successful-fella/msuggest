@@ -54,3 +54,26 @@
 .animate-fade-in {
     animation: fade-in 0.5s ease forwards;
 }
+
+body {
+    background-color: #ffffff;
+    color: #000000;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  /* Dark theme */
+  html.dark body {
+    background-color: #1f2937; /* Tailwind's gray-900 */
+    color: #ffffff;
+  }
+  
+  /* Example for buttons */
+  button {
+    background-color: #f0f0f0;
+    color: #333333;
+  }
+  
+  html.dark button {
+    background-color: #374151; /* Tailwind's gray-700 */
+    color: #ffffff;
+  }

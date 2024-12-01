@@ -11,6 +11,8 @@ interface NavItemProps {
 	href?: string;
 }
 
+import ThemeToggleButton from './ThemeToggleButton';
+
 function NavItem({ children, href }: NavItemProps) {
 	return (
 		<li>
@@ -74,6 +76,7 @@ export function Navbar() {
 							Comments
 						</CommentCount>
 					</Button>
+					<ThemeToggleButton /> 
 				</div>
 			</div>
 		</MTNavbar>
