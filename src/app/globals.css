@@ -9,7 +9,7 @@
 }
 
 .theme-color {
-    color: #db4a2b;
+    color: #db4a2b !important;
 }
 
 .theme-bg {
@@ -66,7 +66,23 @@ body {
     background-color: #1f2937; /* Tailwind's gray-900 */
     color: #ffffff;
   }
-  
+
+  html.dark .accord-title:hover {
+    color: #696868;
+  }
+
+  html.dark ul {
+    background-color: #1f2937;
+  }
+
+  html.dark li, html.dark .accord-body, html.dark .footer-text, html.dark .movie-title {
+    color: #fff !important;
+  }
+ 
+  html.dark .view-icon {
+    color: #000;
+  }
+
   /* Example for buttons */
   button {
     background-color: #f0f0f0;

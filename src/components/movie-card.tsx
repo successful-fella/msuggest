@@ -65,7 +65,7 @@ export function MovieCard({
                             <Typography
                                 variant="h5"
                                 color="blue-gray"
-                                className="mb-3 font-bold normal-case xl:w-64"
+                                className="mb-3 font-bold normal-case xl:w-64 movie-title"
                             >
                                 {title}
                             </Typography>

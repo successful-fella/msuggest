@@ -34,6 +34,7 @@ export default function Component() {
                     layout="fill"
                     objectFit="cover"
                     className="brightness-50"
+                    onError={(e) => e.target.src = "/default-backdrop.webp"}
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-50 flex items-end">
                     <div className="container mx-auto px-4 py-6 flex items-end space-x-6">
@@ -68,7 +69,7 @@ export default function Component() {
 
                         <section>
                             <Typography variant="h4" color="blue-gray" className="mb-2">Details</Typography>
-                            <ul className="space-y-2">
+                            <ul className="space-y-2" style={{ backgroundColor: '#f5f5f5' }}>
                                 <li className="flex items-center">
                                     <CalendarDaysIcon className="h-5 w-5 mr-2 text-blue-gray-500" />
                                     <Typography color="gray">Release Date: {movieDetails.release_date}</Typography>
