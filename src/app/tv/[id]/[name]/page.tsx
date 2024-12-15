@@ -17,7 +17,25 @@ import { useEffect, useState } from "react";
 export default function Component() {
     const params = useParams();
     const tvId = params?.id;
-    const [tvShow, setTvShow] = useState(null);
+    const [tvShow, setTvShow] = useState({
+        backdrop_path: null,
+        poster_path: null,
+        name: '',
+        number_of_seasons: '',
+        number_of_episodes: '',
+        genres: [{
+            id: 1,
+            name: ''
+        }],
+        overview: '',
+        first_air_date: '',
+        origin_country: [],
+        spoken_languages: [{
+            english_name: ''
+        }],
+        status: '',
+        homepage: '',
+    });
 
     useEffect(() => {
         if (tvId) {
@@ -49,7 +67,7 @@ export default function Component() {
                     alt={tvShow.name}
                     fill
                     className="brightness-50 object-cover"
-                    onError={(e) => e.target.src = "/default-backdrop.webp"}
+                    onError={(e) => (e.target as HTMLInputElement).src = "/default-backdrop.webp"}
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-50 flex items-end">
                     <div className="container mx-auto px-4 py-6 flex items-end space-x-6">

@@ -10,7 +10,30 @@ import { useEffect, useState } from "react";
 export default function Component() {
     const params = useParams();
     const movieId = params?.id;
-    const [movieDetails, setMovieDetails] = useState(null);
+    const [movieDetails, setMovieDetails] = useState({
+        backdrop_path: null,
+        poster_path: null,
+        title: '',
+        release_date: '',
+        production_countries: [{
+            name: ''
+        }],
+        production_companies: [{
+            name: ''
+        }],
+        genres: [{
+            id: 1,
+            name: ''
+        }],
+        overview: '',
+        revenue: '',
+        origin_country: [],
+        spoken_languages: [{
+            english_name: ''
+        }],
+        status: '',
+        homepage: '',
+    });
 
     useEffect(() => {
         if (movieId) {
@@ -34,7 +57,7 @@ export default function Component() {
                     layout="fill"
                     objectFit="cover"
                     className="brightness-50"
-                    onError={(e) => e.target.src = "/default-backdrop.webp"}
+                    onError={(e) => (e.target as HTMLInputElement).src = "/default-backdrop.webp"}
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-50 flex items-end">
                     <div className="container mx-auto px-4 py-6 flex items-end space-x-6">
